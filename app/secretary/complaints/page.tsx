@@ -55,6 +55,7 @@ export default async function SecretaryComplaintsPage() {
     id: string;
     body: string;
     status: string;
+    createdAt: Date;
     user: { name: string };
     menuItem: { name: string };
     service: { meal: string; serviceDate: Date };
@@ -67,6 +68,7 @@ export default async function SecretaryComplaintsPage() {
         id: true,
         body: true,
         status: true,
+        createdAt: true,
         user: { select: { name: true } },
         menuItem: { select: { name: true } },
         service: { select: { meal: true, serviceDate: true } },
@@ -108,7 +110,8 @@ export default async function SecretaryComplaintsPage() {
               </div>
               <div className="mt-1 text-xs text-neutral-500">
                 {complaint.menuItem.name}, {mealLabel(complaint.service.meal)}{" "}
-                {dateLabel(complaint.service.serviceDate)}
+                {dateLabel(complaint.service.serviceDate)}, Filed{" "}
+                {dateLabel(complaint.createdAt)}
               </div>
               <p className="mt-2 leading-6 text-neutral-700">{complaint.body}</p>
               {complaint.status === "OPEN" && (
