@@ -47,8 +47,6 @@ App: http://localhost:3001
 
 Postgres is on port **5434**.
 
-The home page lists whatever the seed put in. It is not the product. When the menu issue starts, that page gets replaced.
-
 ## Logins
 
 Passwords are hashed. Sign-in is not built, so these do nothing until that issue lands. Use these accounts when you build it. Don't add your own users to the seed.
