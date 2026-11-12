@@ -42,6 +42,14 @@ function dateLabel(d: Date) {
   });
 }
 
+function filedLabel(d: Date) {
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    timeZone: "Asia/Kolkata",
+  });
+}
+
 function statusLabel(status: string) {
   return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
 }
@@ -111,7 +119,7 @@ export default async function SecretaryComplaintsPage() {
               <div className="mt-1 text-xs text-neutral-500">
                 {complaint.menuItem.name}, {mealLabel(complaint.service.meal)}{" "}
                 {dateLabel(complaint.service.serviceDate)}, Filed{" "}
-                {dateLabel(complaint.createdAt)}
+                {filedLabel(complaint.createdAt)}
               </div>
               <p className="mt-2 leading-6 text-neutral-700">{complaint.body}</p>
               {complaint.status === "OPEN" && (
