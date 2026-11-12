@@ -114,7 +114,9 @@ export default async function BookingsPage({
 
   const now = new Date();
   const message = searchParams.message
-    ? cancelMessages[searchParams.message]
+    ? Object.hasOwn(cancelMessages, searchParams.message)
+      ? cancelMessages[searchParams.message]
+      : undefined
     : undefined;
 
   return (

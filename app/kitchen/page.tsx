@@ -177,7 +177,7 @@ export default async function KitchenPage({
         Signed in as {user.name} ({user.role.toLowerCase()})
       </p>
 
-      {searchParams.error && ERROR_MESSAGES[searchParams.error] ? (
+      {searchParams.error && Object.hasOwn(ERROR_MESSAGES, searchParams.error) ? (
         <div
           role="alert"
           className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700"

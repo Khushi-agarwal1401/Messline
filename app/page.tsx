@@ -65,9 +65,9 @@ export default async function Home({
   const message =
     searchParams?.booked === "1"
       ? bookingMessages.booked
-      : searchParams?.error && bookingMessages[searchParams.error]
+      : searchParams?.error && Object.hasOwn(bookingMessages, searchParams.error)
         ? bookingMessages[searchParams.error]
-        : searchParams?.message && bookingMessages[searchParams.message]
+        : searchParams?.message && Object.hasOwn(bookingMessages, searchParams.message)
           ? bookingMessages[searchParams.message]
           : undefined;
 
