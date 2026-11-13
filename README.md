@@ -68,6 +68,18 @@ Today's breakfast has poha (30 plates, included in the plan) and boiled eggs (10
 
 `npm run cancel:booking` checks the cancel rules against the seed data, so run `npm run db:reset` first and every line should say `PASS`.
 
+## Pages
+
+- `/` today's menu with plate counts and ratings, open to anyone
+- `/login` sign in with email and password, open to anyone
+- `/dishes/<id>` dish details, ingredients, and student reviews, open to anyone
+- `/bookings` student's own bookings, with cancel
+- `/complaints` student's own complaints and their status
+- `/complaints/new` student files a complaint about a dish on a service
+- `/kitchen` kitchen dashboard to manage services, plate counts, and cutoffs
+- `/kitchen/bookings` kitchen view of bookings per service, mark served or no-show
+- `/secretary/complaints` secretary view of all complaints, mark acknowledged
+
 ## CI
 
 Pull requests run lint, `prisma validate`, and a production build. That check has to pass.
