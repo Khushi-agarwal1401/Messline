@@ -33,6 +33,17 @@ function mealLabel(meal: string) {
   return meal.charAt(0).toUpperCase() + meal.slice(1).toLowerCase();
 }
 
+function formatCutoff(d: Date) {
+  return d.toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 function priceLabel(included: boolean, priceRupees: number | null) {
   if (included) return "included";
   if (priceRupees == null) return "no price set";
@@ -196,6 +207,7 @@ export default async function Home({
           <thead>
             <tr className="border-b border-neutral-300">
               <th scope="col" className="py-2 pr-3 font-medium">When</th>
+              <th scope="col" className="py-2 pr-3 font-medium">Cutoff</th>
               <th scope="col" className="py-2 pr-3 font-medium">Item</th>
               <th scope="col" className="py-2 pr-3 font-medium">Price</th>
               <th scope="col" className="py-2 pr-3 font-medium">Rating</th>
@@ -216,6 +228,12 @@ export default async function Home({
                 <tr key={row.id} className="border-b border-neutral-200">
                   <td className="py-2 pr-3">
                     {dayLabel(row.service.serviceDate)} {mealLabel(row.service.meal)}
+                  </td>
+                  <td className="py-2 pr-3">
+                    {formatCutoff(row.service.cutoffAt)}
+                    <span className="ml-2 text-neutral-500">
+                      {isPastCutoff ? "cutoff passed" : "cutoff upcoming"}
+                    </span>
                   </td>
                   <td className="py-2 pr-3">
                     <div>
