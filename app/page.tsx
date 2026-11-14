@@ -234,7 +234,13 @@ export default async function Home({
                   </td>
                   <td className="py-2 pr-3">
                     {formatCutoff(row.service.cutoffAt)}
-                    <span className="ml-2 text-neutral-500">
+                    <span
+                      className={`ml-2 inline-block whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${
+                        isPastCutoff
+                          ? "bg-neutral-100 text-neutral-600"
+                          : "bg-emerald-50 text-emerald-700"
+                      }`}
+                    >
                       {isPastCutoff ? "cutoff passed" : "cutoff upcoming"}
                     </span>
                   </td>
@@ -265,10 +271,14 @@ export default async function Home({
                   <td className="py-2">
                     {row.quantityLeft} / {row.quantityTotal}
                     {row.quantityLeft === 0 && (
-                      <span className="ml-2 text-neutral-500">sold out</span>
+                      <span className="ml-2 inline-block whitespace-nowrap rounded bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700">
+                        sold out
+                      </span>
                     )}
                     {row.quantityLeft > 0 && row.quantityLeft <= 5 && (
-                      <span className="ml-2 text-neutral-500">few left</span>
+                      <span className="ml-2 inline-block whitespace-nowrap rounded bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-800">
+                        few left
+                      </span>
                     )}
                   </td>
                   {user?.role === "STUDENT" && (
