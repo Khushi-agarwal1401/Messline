@@ -159,7 +159,10 @@ export default async function KitchenBookingsPage() {
         ))
       )}
 
-      <p className="mt-8 text-sm">
+      <p className="mt-8 flex items-center gap-4 text-sm">
+        <Link href="/kitchen" className="underline">
+          Kitchen
+        </Link>
         <Link href="/" className="underline">
           Back to home
         </Link>
