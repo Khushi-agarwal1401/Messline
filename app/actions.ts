@@ -3,8 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Role } from "@prisma/client";
-import { getCurrentUser } from "@/lib/auth";
+import { clearSession, getCurrentUser } from "@/lib/auth";
 import { bookPlates } from "@/lib/booking";
+
+export async function signOut() {
+  clearSession();
+  redirect("/");
+}
 
 export async function bookPlatesAction(formData: FormData) {
   const user = await getCurrentUser();
