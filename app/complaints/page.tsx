@@ -72,12 +72,13 @@ export default async function ComplaintsPage() {
       ) : (
         <div className="mt-6 overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
+            <caption className="sr-only">My complaints</caption>
             <thead>
               <tr className="border-b border-neutral-300">
-                <th className="py-2 pr-3 font-medium">Service</th>
-                <th className="py-2 pr-3 font-medium">Dish</th>
-                <th className="py-2 pr-3 font-medium">Complaint</th>
-                <th className="py-2 font-medium">Status</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Service</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Dish</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Complaint</th>
+                <th scope="col" className="py-2 font-medium">Status</th>
               </tr>
             </thead>
             <tbody>
