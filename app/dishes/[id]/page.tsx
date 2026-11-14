@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
@@ -73,6 +73,7 @@ async function rateDish(formData: FormData) {
 
   revalidatePath(`/dishes/${currentDish.id}`);
   revalidatePath("/");
+  redirect(`/dishes/${currentDish.id}?saved=1`);
 }
 
 export async function generateMetadata({
@@ -96,8 +97,10 @@ export async function generateMetadata({
 
 export default async function DishPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams?: { saved?: string };
 }) {
   const dish = await prisma.menuItem.findUnique({
     where: { id: params.id },
@@ -155,6 +158,12 @@ export default async function DishPage({
           <span className="text-neutral-700">{ratingLabel(rating)}</span>
         </p>
       </div>
+
+      {searchParams?.saved === "1" && (
+        <p role="status" className="mt-4 text-sm font-medium">
+          Saved.
+        </p>
+      )}
 
       {isStudent && (
         <form
