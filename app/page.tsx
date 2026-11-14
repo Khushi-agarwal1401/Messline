@@ -211,7 +211,7 @@ export default async function Home({
               <th scope="col" className="py-2 pr-3 font-medium">When</th>
               <th scope="col" className="py-2 pr-3 font-medium">Cutoff</th>
               <th scope="col" className="py-2 pr-3 font-medium">Item</th>
-              <th scope="col" className="py-2 pr-3 font-medium">Ingredients</th>
+              <th scope="col" className="hidden py-2 pr-3 font-medium sm:table-cell">Ingredients</th>
               <th scope="col" className="py-2 pr-3 font-medium">Price</th>
               <th scope="col" className="py-2 pr-3 font-medium">Rating</th>
               <th scope="col" className="py-2 font-medium">Left</th>
@@ -253,7 +253,7 @@ export default async function Home({
                       </div>
                     )}
                   </td>
-                  <td className="py-2 pr-3 text-neutral-700">
+                  <td className="hidden py-2 pr-3 text-neutral-700 sm:table-cell">
                     {row.menuItem.ingredients}
                   </td>
                   <td className="py-2 pr-3">
