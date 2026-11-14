@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // Today dinner: rajma chawal, 35 plates, included in the mess plan, cutoff is 8 hours from seed time.
 // Today breakfast: poha, 30 plates, included in the mess plan; boiled eggs, 10 plates, extra (Rs 20).
 // Yesterday lunch: sambar, cutoff already passed, so a complaint has a dish to attach to.
-// Complaints: Meera has one open complaint about yesterday's sambar.
+// Complaints: Meera has one open complaint and Kabir has one acknowledged complaint about yesterday's sambar.
 // Reviews: veg thali has two, biryani and sambar have one, poha and boiled eggs have none.
 // Bookings: Meera has one BOOKED booking, 1 veg thali at today's lunch (veg thali shows 39 / 40).
 
@@ -216,6 +216,16 @@ async function main() {
       serviceId: yesterdayLunch.id,
       body: "Sambar was cold and too watery.",
       status: ComplaintStatus.OPEN,
+    },
+  });
+
+  await prisma.complaint.create({
+    data: {
+      userId: kabir.id,
+      menuItemId: sambar.id,
+      serviceId: yesterdayLunch.id,
+      body: "Sambar had too much salt.",
+      status: ComplaintStatus.ACKNOWLEDGED,
     },
   });
 
