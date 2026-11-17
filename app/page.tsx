@@ -158,11 +158,22 @@ export default async function Home({
         page yet. Take a task from an issue.
       </p>
 
-      {message && (
-        <p role="status" className="mt-4 text-sm font-medium">
-          {message}
-        </p>
-      )}
+      {message &&
+        (message === bookingMessages.booked ? (
+          <p
+            role="status"
+            className="mt-4 rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+          >
+            {message}
+          </p>
+        ) : (
+          <p
+            role="alert"
+            className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            {message}
+          </p>
+        ))}
 
       {dbDown ? (
         <p className="mt-6 text-sm">
