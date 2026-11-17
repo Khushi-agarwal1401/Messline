@@ -139,7 +139,7 @@ export default async function KitchenBookingsPage() {
                       type="submit"
                       name="status"
                       value={BookingStatus.SERVED}
-                      className="rounded bg-neutral-900 px-3 py-1.5 text-white"
+                      className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700"
                     >
                       Served
                     </button>
@@ -147,7 +147,7 @@ export default async function KitchenBookingsPage() {
                       type="submit"
                       name="status"
                       value={BookingStatus.NO_SHOW}
-                      className="rounded border border-neutral-300 px-3 py-1.5 hover:bg-neutral-100"
+                      className="rounded border border-red-200 px-3 py-1.5 text-sm text-red-700 hover:bg-red-50"
                     >
                       No-show
                     </button>
