@@ -102,7 +102,13 @@ export default async function SecretaryComplaintsPage() {
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="font-medium">{complaint.user.name}</span>
-                <span className="text-xs text-neutral-500">
+                <span
+                  className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
+                    complaint.status === "OPEN"
+                      ? "bg-amber-100 text-amber-800"
+                      : "bg-emerald-100 text-emerald-800"
+                  }`}
+                >
                   {statusLabel(complaint.status)}
                 </span>
               </div>
