@@ -20,6 +20,15 @@ function ratingLabel(rating: Rating | undefined) {
   return `${rating.average.toFixed(1)} (${rating.count})`;
 }
 
+function formatDate(d: Date) {
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
+}
+
 const rateSchema = z.object({
   dishId: z.string().min(1),
   stars: z.preprocess((val) => {
@@ -31,6 +40,15 @@ const rateSchema = z.object({
     }
     return val;
   }, z.number().int().min(1).max(5)),
+  body: z
+    .string()
+    .max(500, "Review comment cannot exceed 500 characters.")
+    .optional()
+    .transform((val) => {
+      if (!val) return null;
+      const trimmed = val.trim();
+      return trimmed.length > 0 ? trimmed : null;
+    }),
 });
 
 async function rateDish(formData: FormData) {
@@ -44,6 +62,7 @@ async function rateDish(formData: FormData) {
   const parsed = rateSchema.safeParse({
     dishId: formData.get("dishId"),
     stars: formData.get("stars"),
+    body: formData.get("body") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -68,11 +87,13 @@ async function rateDish(formData: FormData) {
     },
     update: {
       stars: parsed.data.stars,
+      body: parsed.data.body,
     },
     create: {
       userId: currentUser.id,
       menuItemId: currentDish.id,
       stars: parsed.data.stars,
+      body: parsed.data.body,
     },
   });
 
@@ -139,6 +160,18 @@ export default async function DishPage({
         },
       })
     : null;
+
+  const reviews = await prisma.review.findMany({
+    where: { menuItemId: dish.id },
+    select: {
+      id: true,
+      stars: true,
+      body: true,
+      createdAt: true,
+      user: { select: { name: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
@@ -212,6 +245,24 @@ export default async function DishPage({
             </div>
           </fieldset>
 
+          <div className="mt-4">
+            <label
+              htmlFor="review-body"
+              className="block text-sm font-medium text-neutral-900"
+            >
+              Comment (optional)
+            </label>
+            <textarea
+              id="review-body"
+              name="body"
+              rows={3}
+              maxLength={500}
+              defaultValue={existingReview?.body ?? ""}
+              placeholder="Add a comment (optional)..."
+              className="mt-1 block w-full rounded border border-neutral-300 px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none"
+            />
+          </div>
+
           <button
             type="submit"
             className="mt-4 rounded bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-800"
@@ -220,6 +271,36 @@ export default async function DishPage({
           </button>
         </form>
       )}
+
+      <section className="mt-10 border-t border-neutral-200 pt-6">
+        <h2 className="text-lg font-semibold text-neutral-900">Reviews</h2>
+        {reviews.length === 0 ? (
+          <p className="mt-3 text-sm text-neutral-500">No reviews yet.</p>
+        ) : (
+          <ul className="mt-4 divide-y divide-neutral-200">
+            {reviews.map((rev) => (
+              <li key={rev.id} className="py-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-neutral-900">
+                    {rev.user.name}
+                  </span>
+                  <span className="text-neutral-500">
+                    {formatDate(rev.createdAt)}
+                  </span>
+                </div>
+                <div className="mt-1 text-sm text-neutral-700">
+                  <span className="font-medium">{rev.stars} / 5 stars</span>
+                </div>
+                {rev.body && (
+                  <p className="mt-2 text-sm text-neutral-700 whitespace-pre-wrap">
+                    {rev.body}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }
