@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { signOut } from "./actions";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Messline",
@@ -14,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col">
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
         <header className="border-b border-neutral-200 bg-white">
           <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
             <Link href="/" className="font-semibold">

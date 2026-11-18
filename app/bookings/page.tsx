@@ -128,11 +128,22 @@ export default async function BookingsPage({
         </Link>
       </p>
 
-      {message && (
-        <p role="status" className="mt-4 text-sm">
-          {message}
-        </p>
-      )}
+      {message &&
+        (searchParams.message === "cancelled" ? (
+          <p
+            role="status"
+            className="mt-4 rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+          >
+            {message}
+          </p>
+        ) : (
+          <p
+            role="alert"
+            className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            {message}
+          </p>
+        ))}
 
       {bookings.length === 0 ? (
         <p className="mt-6 text-sm">No bookings yet.</p>
