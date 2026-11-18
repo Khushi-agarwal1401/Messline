@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BookingStatus } from "@prisma/client";
 import { getCurrentUser } from "@/lib/auth";
 import { cancelBooking, CancelBookingError } from "@/lib/booking";
 import { prisma } from "@/lib/db";
@@ -33,14 +34,21 @@ function mealLabel(meal: string) {
   return meal.charAt(0).toUpperCase() + meal.slice(1).toLowerCase();
 }
 
-const statusLabels: Record<string, string> = {
+const statusLabels: Record<BookingStatus, string> = {
   BOOKED: "Booked",
   CANCELLED: "Cancelled",
   SERVED: "Served",
   NO_SHOW: "No-show",
 };
 
-function statusLabel(status: string) {
+const statusStyles: Record<BookingStatus, string> = {
+  BOOKED: "bg-blue-100 text-blue-800",
+  CANCELLED: "bg-neutral-100 text-neutral-700",
+  SERVED: "bg-emerald-100 text-emerald-800",
+  NO_SHOW: "bg-red-100 text-red-800",
+};
+
+function statusLabel(status: BookingStatus) {
   return statusLabels[status] ?? status;
 }
 
@@ -193,7 +201,11 @@ export default async function BookingsPage({
                       <span className="mr-2 text-xs text-neutral-500 sm:hidden">
                         Status
                       </span>
-                      {statusLabel(booking.status)}
+                      <span
+                        className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${statusStyles[booking.status]}`}
+                      >
+                        {statusLabel(booking.status)}
+                      </span>
                     </td>
                     <td className="block py-0.5 sm:table-cell sm:py-2">
                       {booked && (
