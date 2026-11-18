@@ -214,20 +214,20 @@ export default async function Home({
       ) : rows.length === 0 ? (
         <p className="mt-6 text-sm">No published offerings found.</p>
       ) : (
-        <div className="mt-6 overflow-x-auto">
+        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200 bg-white shadow-sm">
           <table className="w-full border-collapse text-left text-sm">
             <caption className="sr-only">Menu</caption>
           <thead>
-            <tr className="border-b border-neutral-300">
-              <th scope="col" className="py-2 pr-3 font-medium">When</th>
-              <th scope="col" className="py-2 pr-3 font-medium">Cutoff</th>
-              <th scope="col" className="py-2 pr-3 font-medium">Item</th>
-              <th scope="col" className="hidden py-2 pr-3 font-medium sm:table-cell">Ingredients</th>
-              <th scope="col" className="py-2 pr-3 font-medium">Price</th>
-              <th scope="col" className="py-2 pr-3 font-medium">Rating</th>
-              <th scope="col" className="py-2 font-medium">Left</th>
+            <tr className="border-b border-neutral-300 bg-neutral-50">
+              <th scope="col" className="py-2 pl-3 pr-3 text-xs uppercase tracking-wide text-neutral-500">When</th>
+              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Cutoff</th>
+              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Item</th>
+              <th scope="col" className="hidden py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500 sm:table-cell">Ingredients</th>
+              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Price</th>
+              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Rating</th>
+              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Left</th>
               {user?.role === "STUDENT" && (
-                <th scope="col" className="py-2 pl-3 font-medium">
+                <th scope="col" className="py-2 pl-3 pr-3 text-xs uppercase tracking-wide text-neutral-500">
                   <span className="sr-only">Book</span>
                 </th>
               )}
@@ -239,8 +239,8 @@ export default async function Home({
               const isOpen = row.quantityLeft > 0 && !isPastCutoff;
 
               return (
-                <tr key={row.id} className="border-b border-neutral-200">
-                  <td className="py-2 pr-3">
+                <tr key={row.id} className="border-b border-neutral-200 hover:bg-neutral-50">
+                  <td className="py-2 pl-3 pr-3">
                     {dayLabel(row.service.serviceDate)} {mealLabel(row.service.meal)}
                   </td>
                   <td className="py-2 pr-3">
@@ -279,7 +279,7 @@ export default async function Home({
                   <td className="py-2 pr-3">
                     {ratingLabel(ratings.get(row.menuItemId))}
                   </td>
-                  <td className="py-2">
+                  <td className="py-2 pr-3">
                     {row.quantityLeft} / {row.quantityTotal}
                     {row.quantityLeft === 0 && (
                       <span className="ml-2 inline-block whitespace-nowrap rounded bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700">
@@ -293,7 +293,7 @@ export default async function Home({
                     )}
                   </td>
                   {user?.role === "STUDENT" && (
-                    <td className="py-2 pl-3">
+                    <td className="py-2 pl-3 pr-3">
                       {isOpen && (
                         <form
                           action={bookPlatesAction}
