@@ -1,16 +1,10 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { clearSession, getCurrentUser } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { bookPlatesAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-async function signOut() {
-  "use server";
-  clearSession();
-  redirect("/");
-}
 // serviceDate is stored as midnight UTC of the local day (same as calendarDate in prisma/seed.ts)
 function calendarDate(offsetDays: number) {
   const now = new Date();
@@ -147,45 +141,6 @@ export default async function Home({
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-2xl font-semibold">Messline</h1>
-      <div className="mt-2 text-sm">
-        {user ? (
-          <form action={signOut} className="flex items-center gap-3">
-            <span>Signed in as {user.name} ({user.role.toLowerCase()})</span>
-            {user.role === "STUDENT" && (
-              <>
-                <Link href="/bookings" className="underline">
-                  My bookings
-                </Link>
-                <Link href="/complaints" className="underline">
-                  Complaints
-                </Link>
-              </>
-            )}
-            {user.role === "KITCHEN" && (
-              <>
-                <Link href="/kitchen" className="underline">
-                  Kitchen
-                </Link>
-                <Link href="/kitchen/bookings" className="underline">
-                  Bookings
-                </Link>
-              </>
-            )}
-            {user.role === "SECRETARY" && (
-              <Link href="/secretary/complaints" className="underline">
-                Complaints
-              </Link>
-            )}
-            <button type="submit" className="underline">
-              Sign out
-            </button>
-          </form>
-        ) : (
-          <Link href="/login" className="underline">
-            Sign in
-          </Link>
-        )}
-      </div>
       <p className="mt-2 text-sm leading-6 text-neutral-700">
         Sign-in, ratings, bookings, and complaints work. Take a task from an issue.
       </p>
