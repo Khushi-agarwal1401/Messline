@@ -34,6 +34,8 @@ Messline is a [Winter of Code Social 2026](https://woc.codesocial.tech) project.
 
 You need Node 20 and Docker. You can run `nvm use`.
 
+If you already had a `.env`, copy the new `SESSION_SECRET` line from `.env.example` into it.
+
 ```bash
 cp .env.example .env
 npm install
@@ -47,11 +49,9 @@ App: http://localhost:3001
 
 Postgres is on port **5434**.
 
-The home page lists whatever the seed put in. It is not the product. When the menu issue starts, that page gets replaced.
-
 ## Logins
 
-Passwords are hashed. Sign-in is not built, so these do nothing until that issue lands. Use these accounts when you build it. Don't add your own users to the seed.
+Passwords are hashed. You can sign in at [http://localhost:3001/login](http://localhost:3001/login) using the accounts in the table below. Don't add your own users to the seed.
 
 | who | email | password |
 | --- | --- | --- |
@@ -67,6 +67,18 @@ Today's breakfast has poha (30 plates, included in the plan) and boiled eggs (10
 `npm run race:booking` fires two bookings at the last biryani plates at the same time. Run `npm run db:reset` first, and it should print `PASS`.
 
 `npm run cancel:booking` checks the cancel rules against the seed data, so run `npm run db:reset` first and every line should say `PASS`.
+
+## Pages
+
+- `/` today's menu with plate counts and ratings, open to anyone
+- `/login` sign in with email and password, open to anyone
+- `/dishes/<id>` dish details, ingredients, and student reviews, open to anyone
+- `/bookings` student's own bookings, with cancel
+- `/complaints` student's own complaints and their status
+- `/complaints/new` student files a complaint about a dish on a service
+- `/kitchen` kitchen dashboard to manage services, plate counts, and cutoffs
+- `/kitchen/bookings` kitchen view of bookings per service, mark served or no-show
+- `/secretary/complaints` secretary view of all complaints, mark acknowledged
 
 ## CI
 

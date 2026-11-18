@@ -31,6 +31,10 @@ function mealLabel(meal: string) {
   return meal.charAt(0).toUpperCase() + meal.slice(1).toLowerCase();
 }
 
+function statusLabel(status: string) {
+  return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+}
+
 export default async function ComplaintsPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
@@ -62,18 +66,25 @@ export default async function ComplaintsPage() {
       </p>
 
       {complaints.length === 0 ? (
-        <p className="mt-6 text-sm text-neutral-500">
-          You haven&apos;t filed any complaints yet.
-        </p>
+        <div className="mt-6 rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+          <p>You haven&apos;t filed any complaints yet.</p>
+          <Link
+            href="/complaints/new"
+            className="mt-3 inline-block underline text-neutral-900"
+          >
+            File a complaint
+          </Link>
+        </div>
       ) : (
         <div className="mt-6 overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
+            <caption className="sr-only">My complaints</caption>
             <thead>
               <tr className="border-b border-neutral-300">
-                <th className="py-2 pr-3 font-medium">Service</th>
-                <th className="py-2 pr-3 font-medium">Dish</th>
-                <th className="py-2 pr-3 font-medium">Complaint</th>
-                <th className="py-2 font-medium">Status</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Service</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Dish</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Complaint</th>
+                <th scope="col" className="py-2 font-medium">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -96,7 +107,7 @@ export default async function ComplaintsPage() {
                           : "bg-emerald-100 text-emerald-800"
                       }`}
                     >
-                      {complaint.status}
+                      {statusLabel(complaint.status)}
                     </span>
                   </td>
                 </tr>

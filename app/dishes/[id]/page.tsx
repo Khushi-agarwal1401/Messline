@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
@@ -9,6 +9,11 @@ import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 type Rating = { average: number; count: number };
+
+function starString(average: number) {
+  const filled = Math.round(average);
+  return "★".repeat(filled) + "☆".repeat(5 - filled);
+}
 
 function ratingLabel(rating: Rating | undefined) {
   if (!rating || rating.count === 0) return "no reviews";
@@ -73,6 +78,7 @@ async function rateDish(formData: FormData) {
 
   revalidatePath(`/dishes/${currentDish.id}`);
   revalidatePath("/");
+  redirect(`/dishes/${currentDish.id}?saved=1`);
 }
 
 export async function generateMetadata({
@@ -96,8 +102,10 @@ export async function generateMetadata({
 
 export default async function DishPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams?: { saved?: string };
 }) {
   const dish = await prisma.menuItem.findUnique({
     where: { id: params.id },
@@ -152,9 +160,24 @@ export default async function DishPage({
         </p>
         <p>
           <span className="font-medium text-neutral-900">Rating:</span>{" "}
-          <span className="text-neutral-700">{ratingLabel(rating)}</span>
+          {rating ? (
+            <>
+              <span aria-hidden="true" className="text-amber-500">
+                {starString(rating.average)}
+              </span>{" "}
+              <span className="text-neutral-700">{ratingLabel(rating)}</span>
+            </>
+          ) : (
+            <span className="text-neutral-700">no reviews</span>
+          )}
         </p>
       </div>
+
+      {searchParams?.saved === "1" && (
+        <p role="status" className="mt-4 text-sm font-medium">
+          Saved.
+        </p>
+      )}
 
       {isStudent && (
         <form

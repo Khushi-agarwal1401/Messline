@@ -48,6 +48,10 @@ const statusStyles: Record<BookingStatus, string> = {
   NO_SHOW: "bg-red-100 text-red-800",
 };
 
+function statusLabel(status: BookingStatus) {
+  return statusLabels[status] ?? status;
+}
+
 const cancelMessages: Record<string, string> = {
   cancelled: "Cancelled.",
   "not-found": "Booking not found.",
@@ -118,7 +122,9 @@ export default async function BookingsPage({
 
   const now = new Date();
   const message = searchParams.message
-    ? cancelMessages[searchParams.message]
+    ? Object.hasOwn(cancelMessages, searchParams.message)
+      ? cancelMessages[searchParams.message]
+      : undefined
     : undefined;
 
   return (
@@ -130,11 +136,22 @@ export default async function BookingsPage({
         </Link>
       </p>
 
-      {message && (
-        <p role="status" className="mt-4 text-sm">
-          {message}
-        </p>
-      )}
+      {message &&
+        (searchParams.message === "cancelled" ? (
+          <p
+            role="status"
+            className="mt-4 rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+          >
+            {message}
+          </p>
+        ) : (
+          <p
+            role="alert"
+            className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            {message}
+          </p>
+        ))}
 
       {bookings.length === 0 ? (
         <p className="mt-6 text-sm">No bookings yet.</p>
@@ -143,11 +160,13 @@ export default async function BookingsPage({
           <table className="block w-full border-collapse text-left text-sm sm:table">
             <thead className="hidden sm:table-header-group">
               <tr className="border-b border-neutral-300">
-                <th className="py-2 pr-3 font-medium">When</th>
-                <th className="py-2 pr-3 font-medium">Dish</th>
-                <th className="py-2 pr-3 font-medium">Count</th>
-                <th className="py-2 pr-3 font-medium">Status</th>
-                <th className="py-2 font-medium"></th>
+                <th scope="col" className="py-2 pr-3 font-medium">When</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Dish</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Count</th>
+                <th scope="col" className="py-2 pr-3 font-medium">Status</th>
+                <th scope="col" className="py-2 font-medium">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody className="block sm:table-row-group">
@@ -185,7 +204,7 @@ export default async function BookingsPage({
                       <span
                         className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${statusStyles[booking.status]}`}
                       >
-                        {statusLabels[booking.status]}
+                        {statusLabel(booking.status)}
                       </span>
                     </td>
                     <td className="block py-0.5 sm:table-cell sm:py-2">
