@@ -66,9 +66,15 @@ export default async function ComplaintsPage() {
       </p>
 
       {complaints.length === 0 ? (
-        <p className="mt-6 text-sm text-neutral-500">
-          You haven&apos;t filed any complaints yet.
-        </p>
+        <div className="mt-6 rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+          <p>You haven&apos;t filed any complaints yet.</p>
+          <Link
+            href="/complaints/new"
+            className="mt-3 inline-block underline text-neutral-900"
+          >
+            File a complaint
+          </Link>
+        </div>
       ) : (
         <div className="mt-6 overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">

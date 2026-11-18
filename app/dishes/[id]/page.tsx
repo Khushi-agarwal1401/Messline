@@ -10,6 +10,11 @@ export const dynamic = "force-dynamic";
 
 type Rating = { average: number; count: number };
 
+function starString(average: number) {
+  const filled = Math.round(average);
+  return "★".repeat(filled) + "☆".repeat(5 - filled);
+}
+
 function ratingLabel(rating: Rating | undefined) {
   if (!rating || rating.count === 0) return "no reviews";
   return `${rating.average.toFixed(1)} (${rating.count})`;
@@ -155,7 +160,16 @@ export default async function DishPage({
         </p>
         <p>
           <span className="font-medium text-neutral-900">Rating:</span>{" "}
-          <span className="text-neutral-700">{ratingLabel(rating)}</span>
+          {rating ? (
+            <>
+              <span aria-hidden="true" className="text-amber-500">
+                {starString(rating.average)}
+              </span>{" "}
+              <span className="text-neutral-700">{ratingLabel(rating)}</span>
+            </>
+          ) : (
+            <span className="text-neutral-700">no reviews</span>
+          )}
         </p>
       </div>
 

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Messline",
@@ -9,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col">
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
         <div className="flex-1">{children}</div>
         <footer className="mt-auto border-t border-neutral-200 py-4 text-xs text-neutral-500">
           <div className="mx-auto flex max-w-3xl items-center gap-4 px-6">

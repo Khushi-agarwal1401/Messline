@@ -34,6 +34,8 @@ Messline is a [Winter of Code Social 2026](https://woc.codesocial.tech) project.
 
 You need Node 20 and Docker. You can run `nvm use`.
 
+If you already had a `.env`, copy the new `SESSION_SECRET` line from `.env.example` into it.
+
 ```bash
 cp .env.example .env
 npm install
@@ -49,7 +51,7 @@ Postgres is on port **5434**.
 
 ## Logins
 
-Passwords are hashed. Sign-in is not built, so these do nothing until that issue lands. Use these accounts when you build it. Don't add your own users to the seed.
+Passwords are hashed. You can sign in at [http://localhost:3001/login](http://localhost:3001/login) using the accounts in the table below. Don't add your own users to the seed.
 
 | who | email | password |
 | --- | --- | --- |

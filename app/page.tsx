@@ -190,11 +190,22 @@ export default async function Home({
         Sign-in, ratings, bookings, and complaints work. Take a task from an issue.
       </p>
 
-      {message && (
-        <p role="status" className="mt-4 text-sm font-medium">
-          {message}
-        </p>
-      )}
+      {message &&
+        (message === bookingMessages.booked ? (
+          <p
+            role="status"
+            className="mt-4 rounded border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+          >
+            {message}
+          </p>
+        ) : (
+          <p
+            role="alert"
+            className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+          >
+            {message}
+          </p>
+        ))}
 
       {dbDown ? (
         <p className="mt-6 text-sm">
@@ -211,7 +222,7 @@ export default async function Home({
               <th scope="col" className="py-2 pl-3 pr-3 text-xs uppercase tracking-wide text-neutral-500">When</th>
               <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Cutoff</th>
               <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Item</th>
-              <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Ingredients</th>
+              <th scope="col" className="hidden py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500 sm:table-cell">Ingredients</th>
               <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Price</th>
               <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Rating</th>
               <th scope="col" className="py-2 pr-3 text-xs uppercase tracking-wide text-neutral-500">Left</th>
@@ -234,7 +245,13 @@ export default async function Home({
                   </td>
                   <td className="py-2 pr-3">
                     {formatCutoff(row.service.cutoffAt)}
-                    <span className="ml-2 text-neutral-500">
+                    <span
+                      className={`ml-2 inline-block whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${
+                        isPastCutoff
+                          ? "bg-neutral-100 text-neutral-600"
+                          : "bg-emerald-50 text-emerald-700"
+                      }`}
+                    >
                       {isPastCutoff ? "cutoff passed" : "cutoff upcoming"}
                     </span>
                   </td>
@@ -253,7 +270,7 @@ export default async function Home({
                       </div>
                     )}
                   </td>
-                  <td className="py-2 pr-3 text-neutral-700">
+                  <td className="hidden py-2 pr-3 text-neutral-700 sm:table-cell">
                     {row.menuItem.ingredients}
                   </td>
                   <td className="py-2 pr-3">
@@ -265,10 +282,14 @@ export default async function Home({
                   <td className="py-2 pr-3">
                     {row.quantityLeft} / {row.quantityTotal}
                     {row.quantityLeft === 0 && (
-                      <span className="ml-2 text-neutral-500">sold out</span>
+                      <span className="ml-2 inline-block whitespace-nowrap rounded bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700">
+                        sold out
+                      </span>
                     )}
                     {row.quantityLeft > 0 && row.quantityLeft <= 5 && (
-                      <span className="ml-2 text-neutral-500">few left</span>
+                      <span className="ml-2 inline-block whitespace-nowrap rounded bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-800">
+                        few left
+                      </span>
                     )}
                   </td>
                   {user?.role === "STUDENT" && (
