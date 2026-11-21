@@ -102,7 +102,9 @@ export default async function SecretaryComplaintsPage() {
           Could not read Postgres. Check README for the docker and seed commands.
         </p>
       ) : complaints.length === 0 ? (
-        <p className="mt-6 text-sm">No complaints.</p>
+        <p className="mt-6 rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+          No complaints yet.
+        </p>
       ) : (
         <ul className="mt-6 space-y-4">
           {complaints.map((complaint) => (
