@@ -114,7 +114,9 @@ export default async function KitchenBookingsPage() {
       </p>
 
       {groups.size === 0 ? (
-        <p className="mt-6 text-sm">Nothing to mark.</p>
+        <p className="mt-6 rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
+          Nothing to mark. Every booking from today and earlier has a status.
+        </p>
       ) : (
         Array.from(groups.entries()).map(([serviceId, group]) => (
           <section key={serviceId} className="mt-8">
